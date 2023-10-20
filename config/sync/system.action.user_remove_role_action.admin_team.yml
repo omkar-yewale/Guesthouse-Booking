@@ -1,0 +1,14 @@
+uuid: 0750eaee-24d4-4b85-bfda-85502b8fc7af
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.admin_team
+  module:
+    - user
+id: user_remove_role_action.admin_team
+label: 'Remove the Admin Team role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: admin_team

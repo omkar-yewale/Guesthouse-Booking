@@ -1,0 +1,8 @@
+name: guesthouse-booking
+recipe: drupal10
+services:
+  database:
+    type: mysql
+    portforward: 3320
+config:
+  webroot: web
