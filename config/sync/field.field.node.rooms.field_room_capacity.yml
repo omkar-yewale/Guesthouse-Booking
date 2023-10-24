@@ -1,0 +1,25 @@
+uuid: a8ebdf67-3b6b-4cd0-aee0-ae1412f3dcf5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_capacity
+    - node.type.rooms
+id: node.rooms.field_room_capacity
+field_name: field_room_capacity
+entity_type: node
+bundle: rooms
+label: 'Room capacity'
+description: "Specify the room's maximum occupancy in terms of the number of guests it can accommodate."
+required: true
+translatable: false
+default_value:
+  -
+    value: 2
+default_value_callback: ''
+settings:
+  min: 1
+  max: 19
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,47 @@
+uuid: f2a77c2c-35f2-461d-896b-eb0dbe924f04
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.rooms.body
+    - field.field.node.rooms.field_guesthouse
+    - field.field.node.rooms.field_room_capacity
+    - node.type.rooms
+  module:
+    - text
+    - user
+id: node.rooms.default
+targetEntityType: node
+bundle: rooms
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_guesthouse:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_room_capacity:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden: {  }

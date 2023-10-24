@@ -1,0 +1,34 @@
+uuid: f61dfce6-e6fa-4054-9134-91209b958bf5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.rooms.body
+    - field.field.node.rooms.field_guesthouse
+    - field.field.node.rooms.field_room_capacity
+    - node.type.rooms
+  module:
+    - text
+    - user
+id: node.rooms.teaser
+targetEntityType: node
+bundle: rooms
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_guesthouse: true
+  field_room_capacity: true

@@ -1,0 +1,20 @@
+uuid: e38f15b9-330e-4409-81e9-7a89555d15d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_room_capacity
+field_name: field_room_capacity
+entity_type: node
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
