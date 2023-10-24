@@ -1,0 +1,8 @@
+uuid: 1b1b4805-04d5-48b6-bce4-c5e071a935d6
+langcode: en
+status: true
+dependencies: {  }
+name: Guesthouse
+vid: guesthouse
+description: 'Create all guest house terms.'
+weight: 0
