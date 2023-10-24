@@ -2,11 +2,18 @@
 /drush/contrib/
 /vendor/
 /web/core/
-/web/modules/contrib/
-/web/themes/contrib/
-/web/profiles/contrib/
-/web/libraries/
-
+/web/modules/contrib/*
+/web/themes/contrib/*
+/web/profiles/contrib/*
+/web/libraries/*
+# Ignore PHP files in the specified directory
+/web/sites/default/files/php/twig/*/.htaccess
+/web/sites/default/files/php/twig/*/*.php
+# Ignore PHP files in the specified directory
+/web/sites/default/files/css/*.css
+/web/sites/default/files/css/*.css.gz
+/web/sites/default/files/js/*.js
+/web/sites/default/files/js/*.js.gz
 # Ignore sensitive information
 /web/sites/*/settings.local.php
 
@@ -50,3 +57,7 @@ web/sites/example.sites.php
 web/themes/README.txt
 web/update.php
 web/web.config
+/web/sites/default/files/**
+/default/files/*
+sites/default/files/php/twig/*
+web/sites/default/files/php/twig/653208a6e2c75_views-view--frontpage.htm_JeDAB-7M80Px-oR8Sklt15H78/qV4UnAbGaZAaFV62m_OZJJU4e9nYT5z10AWEJRAUdAE.php
