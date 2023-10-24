@@ -1,0 +1,30 @@
+# Eclipse
+.project
+tmp/**
+tmp/**/*
+*.tmp
+
+# OS-specific files.
+.DS_Store
+
+.github/
+
+# Drupal VM specific files.
+/web/sites/default/settings.php
+drupal.composer.json
+local.config.yml
+Vagrantfile.local
+/config.yml
+/docker-compose.yml
+/drupal.make.yml
+/drupal/
+/default.config.yml
+/web/sites/default/*
+/sites/*
+sites/
+/web/sites/default/files/php/*
+web/sites/default/settings.php
+
+
+
+
