@@ -19,11 +19,13 @@
         "drupal/admin_toolbar": "^3.4",
         "drupal/backup_migrate": "^5.0",
         "drupal/conditional_fields": "^4.0@alpha",
+        "drupal/core": "^10.1",
         "drupal/core-composer-scaffold": "^10.1",
         "drupal/core-project-message": "^10.1",
         "drupal/core-recommended": "^10.1",
         "drupal/fullcalendar_view": "^5.1",
-        "drush/drush": "^12.3"
+        "drupal/webform": "^6.2@RC",
+        "drupal/webform_views": "^5.2"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -96,5 +98,8 @@
                 "      composer remove drupal/core-project-message"
             ]
         }
+    },
+    "require-dev": {
+        "drush/drush": "^12.4"
     }
 }

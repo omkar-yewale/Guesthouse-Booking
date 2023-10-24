@@ -862,10 +862,10 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # }
 $databases['default']['default'] = array (
   'database' => 'drupal10',
-  'username' => 'drupal10',
-  'password' => 'drupal10',
+  'username' => 'root',
+  'password' => '',
   'prefix' => '',
-  'host' => 'database',
+  'host' => 'localhost',
   'port' => '3306',
   'isolation_level' => 'READ COMMITTED',
   'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
@@ -874,5 +874,4 @@ $databases['default']['default'] = array (
 );
 
 $settings['config_sync_directory'] = '../config/sync';
-include $app_root . '/' . $site_path . '/settings.env.php';
-include $app_root . '/' . $site_path . '/settings.lando.php';
+
