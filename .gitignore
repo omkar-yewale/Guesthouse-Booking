@@ -44,7 +44,6 @@ web/.ht.router.php
 web/INSTALL.txt
 web/README.md
 web/index.php
-web/modules/README.txt
 web/profiles/README.txt
 web/robots.txt
 web/sites/README.txt
@@ -59,5 +58,3 @@ web/update.php
 web/web.config
 /web/sites/default/files/**
 /default/files/*
-sites/default/files/php/twig/*
-web/sites/default/files/php/twig/653208a6e2c75_views-view--frontpage.htm_JeDAB-7M80Px-oR8Sklt15H78/qV4UnAbGaZAaFV62m_OZJJU4e9nYT5z10AWEJRAUdAE.php

@@ -1,0 +1,10 @@
+custom_booking.settings:
+  type: config_object
+  label: 'Custom Booking settings'
+  mapping:
+    shared_room_cost:
+      type: integer
+      label: 'Shared Room Cost Per Day'
+    single_room_cost:
+      type: integer
+      label: 'Single Room Cost Per Day'

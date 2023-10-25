@@ -1,0 +1,7 @@
+name: 'Custom Booking'
+type: module
+description: 'A custom module for booking changes.'
+core_version_requirement: ^10
+package: Custom
+help: custom_booking
+configure: custom_booking.settings

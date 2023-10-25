@@ -1,0 +1,17 @@
+<?php
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountInterface;
+
+/**
+ * Implements hook_help().
+ */
+function custom_booking_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.custom_booking':
+      return '<p>' . t('A custom module for booking changes.') . '</p>';
+    
+    default:
+  }
+}
+

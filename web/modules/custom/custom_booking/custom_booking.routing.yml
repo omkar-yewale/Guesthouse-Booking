@@ -1,0 +1,8 @@
+custom_booking.settings:
+  path: '/admin/config/price-set'
+  defaults:
+    _form: '\Drupal\custom_booking\Form\BookingPriceSettingsForm'
+    _title: 'Booking Cost Settings'
+  requirements:
+    _permission: 'administer site configuration'
+
