@@ -149,3 +149,5 @@ function totalCostCalculation($totalDays, $roomType) {
 
   return $totalCost;
 }
+
+
