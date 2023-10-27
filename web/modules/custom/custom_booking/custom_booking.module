@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * @file
+ * Contains generic functions.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
+use Drupal\node\Entity\Node;
+use Drupal\user\Entity\User;
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Implements hook_help().
@@ -9,9 +18,134 @@ use Drupal\Core\Session\AccountInterface;
 function custom_booking_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.custom_booking':
-      return '<p>' . t('A custom module for booking changes.') . '</p>';
-    
+
+      return '<p>' . t('A custom module to handle a booking alterations.') . '</p>';
+
     default:
   }
 }
 
+/**
+ * Implements hook_form_alter().
+ */
+function custom_booking_form_alter(&$form, &$form_state, $form_id) {
+  // Weform form alter.
+  if ($form_id == 'webform_submission_create_booking_add_form' || $form_id == 'webform_submission_create_booking_edit_form') {
+    // Called custom validation.
+    $form['#validate'][] = 'custom_booking_webform_custom_booking_validation';
+  }
+}
+
+/**
+ * Implements hook_webform_submission_presave().
+ */
+function custom_booking_webform_submission_presave(WebformSubmissionInterface $webform_submission) {
+  $employeeStatus = $webform_submission->getElementData('employee_status');
+  $emp = $webform_submission->getElementData('select_employee');
+  $isChargable = $webform_submission->getElementData('is_chargeable');
+  // Add exisiting employee name and email in field.
+  if ($employeeStatus == 'old' && !empty($emp)) {
+    $user = User::load($emp);
+    $email = $user->get('mail')->value;
+    $name = $user->get('name')->value;
+    $webform_submission->setElementData('employee_name', $name);
+    $webform_submission->setElementData('employee_email', $email);
+  }
+  // Count total chargs and add it into the total amount field.
+  if ($isChargable == 1) {
+    $startDate = $webform_submission->getElementData('start_date');
+    $endDate = $webform_submission->getElementData('end_date');
+    $roomType = $webform_submission->getElementData('room_occupancy');
+    $totalDays = getTotalDays($startDate, $endDate);
+    $charges = totalCostCalculation($totalDays, $roomType);
+    $webform_submission->setElementData('total_amount', $charges);
+  }
+  else {
+    $webform_submission->setElementData('total_amount', 0);
+  }
+}
+
+/**
+ * Custom booking overlapping validation.
+ */
+function custom_booking_webform_custom_booking_validation($form, FormStateInterface $form_state) {
+  $startDate = $form_state->getValue('start_date');
+  $endDate = $form_state->getValue('end_date');
+  $guesthouse = $form_state->getValue('guesthouse');
+  $roomOccupancy = $form_state->getValue('room_occupancy');
+  $roomId = $form_state->getValue('assign_room');
+  // Ensure that the end date is not before the start date.
+  if (strtotime($endDate) < strtotime($startDate)) {
+    $form_state->setErrorByName('end_date', t('End date cannot be a past date compared to the start date.'));
+  }
+  else {
+    // Check if there are overlapping bookings.
+    if (!empty($guesthouse) && !empty($roomOccupancy) && !empty($roomId)) {
+      $bookedRoomNids = getBookedNids($startDate, $endDate, $roomId, $guesthouse);
+      if (count($bookedRoomNids) == 1) {
+        $submission = WebformSubmission::load(reset($bookedRoomNids));
+        if ($submission) {
+          $occupancy = $submission->getElementData('room_occupancy');
+        }
+      }
+      // Load room capacity.
+      $node = Node::load($roomId);
+      $roomCapacity = $node->field_room_capacity->value;
+      // Check for single occupancy.
+      if ($roomOccupancy == 'single' && count($bookedRoomNids) >= 1) {
+        $form_state->setErrorByName('assign_room', t('The room is fully booked for single occupancy during the selected date range.'));
+      }
+      elseif ($occupancy == 'single' && $roomOccupancy == 'shared') {
+        // If user booked single room in date range,
+        // then restrict them to create shared booking.
+        $form_state->setErrorByName('assign_room', t('The room is fully booked within the specified date range.'));
+      }
+      elseif ($roomOccupancy == 'shared' && (count($bookedRoomNids) >= $roomCapacity)) {
+        // If room is shared and check room capacity.
+        $form_state->setErrorByName('assign_room', t('The room is fully booked within the specified date range.'));
+      }
+    }
+  }
+}
+
+/**
+ * Get webform submissions ids.
+ */
+function getBookedNids($startDate, $endDate, $roomId, $guesthouse) {
+  $query = \Drupal::service('webform_query');
+  $query->addCondition('guesthouse', $guesthouse);
+  $query->addCondition('assign_room', $roomId);
+  $query->addCondition('start_date', $endDate, '<=');
+  $query->addCondition('end_date', $startDate, '>=');
+  $bookedRoomNids = $query->processQuery()->fetchCol();
+  return $bookedRoomNids;
+}
+
+/**
+ * Calculate Total number of days.
+ */
+function getTotalDays($startDate, $endDate) {
+  $startDateObj = new DateTime($startDate);
+  $endDateObj = new DateTime($endDate);
+  $interval = $startDateObj->diff($endDateObj);
+  $numberOfDays = $interval->days + 1;
+  return $numberOfDays;
+}
+
+/**
+ * Calculate Total charges of booking.
+ */
+function totalCostCalculation($totalDays, $roomType) {
+  $totalCost = 0;
+  $config = \Drupal::config('custom_booking.settings');
+  if (!empty($roomType) && $roomType == 'shared') {
+    $sharedRoomCost = $config->get('shared_room_cost');
+    $totalCost = $totalDays * $sharedRoomCost;
+  }
+  if (!empty($roomType) && $roomType == 'single') {
+    $singleRoomCost = $config->get('single_room_cost');
+    $totalCost = $totalDays * $singleRoomCost;
+  }
+
+  return $totalCost;
+}
