@@ -61,6 +61,13 @@ elements: |-
       '#title': 'Assign Room'
       '#select2': true
       '#required': true
+      '#states':
+        visible:
+          ':input[name="assign_room"]':
+            filled: true
+        enabled:
+          ':input[name="assign_room"]':
+            filled: true
       '#target_type': node
       '#selection_handler': 'default:node'
       '#selection_settings':
