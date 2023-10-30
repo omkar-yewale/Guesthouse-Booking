@@ -5,6 +5,8 @@
  * Contains generic functions.
  */
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\Entity\Node;
@@ -31,9 +33,77 @@ function custom_booking_help($route_name, RouteMatchInterface $route_match) {
 function custom_booking_form_alter(&$form, &$form_state, $form_id) {
   // Weform form alter.
   if ($form_id == 'webform_submission_create_booking_add_form' || $form_id == 'webform_submission_create_booking_edit_form') {
-    // Called custom validation.
-    $form['#validate'][] = 'custom_booking_webform_custom_booking_validation';
+    $form['elements']['booking_details']['assign_room']['#prefix'] = '<div id="ajax-wrapper-field-offices">';
+    $form['elements']['booking_details']['assign_room']['#suffix'] = '</div>';
+
+    $form['elements']['booking_details']['guesthouse']['#ajax'] = [
+      'event' => 'change',
+      'callback' => 'custom_booking_update_room_list_callback',
+      'wrapper' => 'ajax-wrapper-field-offices',
+    ];
+
+    if (!empty($form_state->getValue('guesthouse'))) {
+      $selectTerm = $form_state->getValue('guesthouse');
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'rooms')
+        ->condition('field_guesthouse', $selectTerm)
+        ->accessCheck(TRUE);
+      $room_nids = $query->execute();
+
+      if (!empty($room_nids)) {
+        // $options = ['selected' => '- Select a value -'];
+        $room_storage = \Drupal::entityTypeManager()->getStorage('node');
+        $rooms = $room_storage->loadMultiple($room_nids);
+
+        foreach ($rooms as $room) {
+          $options[$room->id()] = $room->label();
+        }
+        $form['elements']['booking_details']['assign_room']['#options'] = $options;
+      }
+
+    }
   }
+
+  // Called custom validation.
+  $form['#validate'][] = 'custom_booking_webform_custom_booking_validation';
+}
+
+/**
+ *
+ */
+function custom_booking_update_room_list_callback(array &$form, FormStateInterface $form_state) {
+
+  $selectTerm = $form_state->getValue('guesthouse');
+  // dump($selectTerm);
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'rooms')
+    ->condition('field_guesthouse', $selectTerm)
+    ->accessCheck(TRUE);
+  $room_nids = $query->execute();
+
+  if (!empty($room_nids)) {
+    // $options = ['selected' => '- Select a value -'];
+    $room_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $rooms = $room_storage->loadMultiple($room_nids);
+
+    foreach ($rooms as $room) {
+      $options[$room->id()] = $room->label();
+    }
+  }
+  // else
+  // {
+  //   $options = ['selected' => '- Select a value -'];
+  // }.
+  $form['elements']['booking_details']['assign_room']['#options'] = $options;
+  // Return $form['elements']['booking_details']['assign_room'];.
+  $field_room_element = \Drupal::service('renderer')->render($form['elements']['booking_details']['assign_room']);
+
+  // Return the HTML of the updated element as the AJAX response.
+  $response = new AjaxResponse();
+  $response->addCommand(new HtmlCommand('#ajax-wrapper-field-offices', $field_room_element));
+
+  return $response;
+
 }
 
 /**
