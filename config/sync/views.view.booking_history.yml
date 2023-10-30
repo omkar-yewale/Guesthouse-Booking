@@ -547,7 +547,20 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'No booking is available.'
+            format: full_html
+          tokenize: false
       sorts:
         created:
           id: created
@@ -911,7 +924,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: "<div id=\"block-claro-local-actions\">\r\n  <ul class=\"local-actions\">\r\n    <li class=\"local-actions__item\"><a href=\"/Guesthouse-Booking/web/form/create-booking\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\">Create New Booking</a></li>\r\n  </ul>\r\n</div>"
+            value: "<div id=\"block-claro-local-actions\">\r\n  <ul class=\"local-actions\">\r\n    <li class=\"local-actions__item1\"><a href=\"/Guesthouse-Booking/web/form/create-booking\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\">Create New Booking</a></li>\r\n  </ul>\r\n</div>"
             format: full_html
           tokenize: false
       display_extenders: {  }
