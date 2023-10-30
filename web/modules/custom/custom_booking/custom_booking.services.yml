@@ -1,0 +1,4 @@
+services:
+  common_services:
+    class: Drupal\custom_booking\Services\CommonServices
+    arguments: ['@entity_type.manager']
