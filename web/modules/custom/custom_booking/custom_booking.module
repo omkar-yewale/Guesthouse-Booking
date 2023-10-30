@@ -74,6 +74,12 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
   $guesthouse = $form_state->getValue('guesthouse');
   $roomOccupancy = $form_state->getValue('room_occupancy');
   $roomId = $form_state->getValue('assign_room');
+  $route_match = \Drupal::routeMatch();
+  // Get the submission ID from the route parameters.
+  $submission_id = $route_match->getParameter('webform_submission');
+  if ($submission_id instanceof WebformSubmission) {
+    $submission_id = $submission_id->id();
+  }
   // Ensure that the end date is not before the start date.
   if (strtotime($endDate) < strtotime($startDate)) {
     $form_state->setErrorByName('end_date', t('End date cannot be a past date compared to the start date.'));
@@ -82,6 +88,12 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
     // Check if there are overlapping bookings.
     if (!empty($guesthouse) && !empty($roomOccupancy) && !empty($roomId)) {
       $bookedRoomNids = getBookedNids($startDate, $endDate, $roomId, $guesthouse);
+      // For edit form confition.
+      if (!empty($submission_id) || $submission_id != '') {
+        if (in_array($submission_id, $bookedRoomNids)) {
+          $bookedRoomNids = array_diff($bookedRoomNids, [$submission_id]);
+        }
+      }
       if (count($bookedRoomNids) == 1) {
         $submission = WebformSubmission::load(reset($bookedRoomNids));
         if ($submission) {
@@ -149,5 +161,3 @@ function totalCostCalculation($totalDays, $roomType) {
 
   return $totalCost;
 }
-
-
