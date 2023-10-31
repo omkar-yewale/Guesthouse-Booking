@@ -33,69 +33,34 @@ function custom_booking_help($route_name, RouteMatchInterface $route_match) {
 function custom_booking_form_alter(&$form, &$form_state, $form_id) {
   // Weform form alter.
   if ($form_id == 'webform_submission_create_booking_add_form' || $form_id == 'webform_submission_create_booking_edit_form') {
+    // Add wrapper to ajax call.
     $form['elements']['booking_details']['assign_room']['#prefix'] = '<div id="ajax-wrapper-field-offices">';
     $form['elements']['booking_details']['assign_room']['#suffix'] = '</div>';
-
+    // Ajax call.
     $form['elements']['booking_details']['guesthouse']['#ajax'] = [
       'event' => 'change',
       'callback' => 'custom_booking_update_room_list_callback',
       'wrapper' => 'ajax-wrapper-field-offices',
     ];
-
-    if (!empty($form_state->getValue('guesthouse'))) {
-      $selectTerm = $form_state->getValue('guesthouse');
-      $query = \Drupal::entityQuery('node')
-        ->condition('type', 'rooms')
-        ->condition('field_guesthouse', $selectTerm)
-        ->accessCheck(TRUE);
-      $room_nids = $query->execute();
-
-      if (!empty($room_nids)) {
-        // $options = ['selected' => '- Select a value -'];
-        $room_storage = \Drupal::entityTypeManager()->getStorage('node');
-        $rooms = $room_storage->loadMultiple($room_nids);
-
-        foreach ($rooms as $room) {
-          $options[$room->id()] = $room->label();
-        }
-        $form['elements']['booking_details']['assign_room']['#options'] = $options;
-      }
-
+    $guesthouseId = $form_state->getValue('guesthouse');
+    if (!empty($guesthouseId)) {
+      $guesthouseId = $form_state->getValue('guesthouse');
+      $options = getRoomListOptions($guesthouseId);
+      $form['elements']['booking_details']['assign_room']['#options'] = $options;
     }
   }
-
   // Called custom validation.
   $form['#validate'][] = 'custom_booking_webform_custom_booking_validation';
 }
 
 /**
- *
+ * Akax callback function.
  */
 function custom_booking_update_room_list_callback(array &$form, FormStateInterface $form_state) {
-
-  $selectTerm = $form_state->getValue('guesthouse');
-  // dump($selectTerm);
-  $query = \Drupal::entityQuery('node')
-    ->condition('type', 'rooms')
-    ->condition('field_guesthouse', $selectTerm)
-    ->accessCheck(TRUE);
-  $room_nids = $query->execute();
-
-  if (!empty($room_nids)) {
-    // $options = ['selected' => '- Select a value -'];
-    $room_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $rooms = $room_storage->loadMultiple($room_nids);
-
-    foreach ($rooms as $room) {
-      $options[$room->id()] = $room->label();
-    }
-  }
-  // else
-  // {
-  //   $options = ['selected' => '- Select a value -'];
-  // }.
+  $guesthouseId = $form_state->getValue('guesthouse');
+  $options = getRoomListOptions($guesthouseId);
+  // Add dynamic options to assign room field.
   $form['elements']['booking_details']['assign_room']['#options'] = $options;
-  // Return $form['elements']['booking_details']['assign_room'];.
   $field_room_element = \Drupal::service('renderer')->render($form['elements']['booking_details']['assign_room']);
 
   // Return the HTML of the updated element as the AJAX response.
@@ -103,13 +68,13 @@ function custom_booking_update_room_list_callback(array &$form, FormStateInterfa
   $response->addCommand(new HtmlCommand('#ajax-wrapper-field-offices', $field_room_element));
 
   return $response;
-
 }
 
 /**
  * Implements hook_webform_submission_presave().
  */
 function custom_booking_webform_submission_presave(WebformSubmissionInterface $webform_submission) {
+  $commonService = \Drupal::service('common_services');
   $employeeStatus = $webform_submission->getElementData('employee_status');
   $emp = $webform_submission->getElementData('select_employee');
   $isChargable = $webform_submission->getElementData('is_chargeable');
@@ -126,8 +91,8 @@ function custom_booking_webform_submission_presave(WebformSubmissionInterface $w
     $startDate = $webform_submission->getElementData('start_date');
     $endDate = $webform_submission->getElementData('end_date');
     $roomType = $webform_submission->getElementData('room_occupancy');
-    $totalDays = getTotalDays($startDate, $endDate);
-    $charges = totalCostCalculation($totalDays, $roomType);
+    $totalDays = $commonService->getTotalDays($startDate, $endDate);
+    $charges = $commonService->totalCostCalculation($totalDays, $roomType);
     $webform_submission->setElementData('total_amount', $charges);
   }
   else {
@@ -157,7 +122,8 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
   else {
     // Check if there are overlapping bookings.
     if (!empty($guesthouse) && !empty($roomOccupancy) && !empty($roomId)) {
-      $bookedRoomNids = getBookedNids($startDate, $endDate, $roomId, $guesthouse);
+      $commonService = \Drupal::service('common_services');
+      $bookedRoomNids = $commonService->getBookedNids($startDate, $endDate, $roomId, $guesthouse);
       // For edit form confition.
       if (!empty($submission_id) || $submission_id != '') {
         if (in_array($submission_id, $bookedRoomNids)) {
@@ -191,43 +157,23 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
 }
 
 /**
- * Get webform submissions ids.
+ * Get room list options value.
  */
-function getBookedNids($startDate, $endDate, $roomId, $guesthouse) {
-  $query = \Drupal::service('webform_query');
-  $query->addCondition('guesthouse', $guesthouse);
-  $query->addCondition('assign_room', $roomId);
-  $query->addCondition('start_date', $endDate, '<=');
-  $query->addCondition('end_date', $startDate, '>=');
-  $bookedRoomNids = $query->processQuery()->fetchCol();
-  return $bookedRoomNids;
-}
+function getRoomListOptions($guesthouseId) {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'rooms')
+    ->condition('field_guesthouse', $guesthouseId)
+    ->accessCheck(TRUE);
+  $room_nids = $query->execute();
+  if (!empty($room_nids)) {
+    // $options = ['selected' => '- Select a value -'];
+    $room_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $rooms = $room_storage->loadMultiple($room_nids);
 
-/**
- * Calculate Total number of days.
- */
-function getTotalDays($startDate, $endDate) {
-  $startDateObj = new DateTime($startDate);
-  $endDateObj = new DateTime($endDate);
-  $interval = $startDateObj->diff($endDateObj);
-  $numberOfDays = $interval->days + 1;
-  return $numberOfDays;
-}
-
-/**
- * Calculate Total charges of booking.
- */
-function totalCostCalculation($totalDays, $roomType) {
-  $totalCost = 0;
-  $config = \Drupal::config('custom_booking.settings');
-  if (!empty($roomType) && $roomType == 'shared') {
-    $sharedRoomCost = $config->get('shared_room_cost');
-    $totalCost = $totalDays * $sharedRoomCost;
-  }
-  if (!empty($roomType) && $roomType == 'single') {
-    $singleRoomCost = $config->get('single_room_cost');
-    $totalCost = $totalDays * $singleRoomCost;
+    foreach ($rooms as $room) {
+      $options[$room->id()] = $room->label();
+    }
   }
 
-  return $totalCost;
+  return $options;
 }

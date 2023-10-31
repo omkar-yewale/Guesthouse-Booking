@@ -27,26 +27,45 @@ class CommonServices {
   }
 
   /**
-   * Fetches the node title based on content type.
-   *
-   * @param string $contentType
-   *   The machine name of the content type.
-   *
-   * @return string|null
-   *   The node title if found, or NULL if not found.
+   * Get webform submissions ids.
    */
-  public function getNodeTitleByContentType($contentType) {
-    $nodeStorage = $this->entityTypeManager->getStorage('node');
-    $query = $nodeStorage->getQuery()
-      ->condition('type', $contentType)
-      ->accessCheck(FALSE)
-      ->range(0, 1);
-    $nids = $query->execute();
-    if (!empty($nids)) {
-      $node = $nodeStorage->load(reset($nids));
-      return $node->label();
+  public function getBookedNids($startDate, $endDate, $roomId, $guesthouse) {
+    $query = \Drupal::service('webform_query');
+    $query->addCondition('guesthouse', $guesthouse);
+    $query->addCondition('assign_room', $roomId);
+    $query->addCondition('start_date', $endDate, '<=');
+    $query->addCondition('end_date', $startDate, '>=');
+    $bookedRoomNids = $query->processQuery()->fetchCol();
+    return $bookedRoomNids;
+  }
+
+  /**
+   * Calculate Total number of days.
+   */
+  public function getTotalDays($startDate, $endDate) {
+    $startDateObj = new \DateTime($startDate);
+    $endDateObj = new \DateTime($endDate);
+    $interval = $startDateObj->diff($endDateObj);
+    $numberOfDays = $interval->days + 1;
+    return $numberOfDays;
+  }
+
+  /**
+   * Calculate Total charges of booking.
+   */
+  public function totalCostCalculation($totalDays, $roomType) {
+    $totalCost = 0;
+    $config = \Drupal::config('custom_booking.settings');
+    if (!empty($roomType) && $roomType == 'shared') {
+      $sharedRoomCost = $config->get('shared_room_cost');
+      $totalCost = $totalDays * $sharedRoomCost;
     }
-    return NULL;
+    if (!empty($roomType) && $roomType == 'single') {
+      $singleRoomCost = $config->get('single_room_cost');
+      $totalCost = $totalDays * $singleRoomCost;
+    }
+
+    return $totalCost;
   }
 
 }
