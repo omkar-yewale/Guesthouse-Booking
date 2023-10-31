@@ -317,5 +317,42 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  submission_creation:
+    id: email
+    handler_id: submission_creation
+    label: 'Submission Creation'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_submission:values:employee_email:raw]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: _default
+      cc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: _default
+      body: "<p>Submitted on {{ webform_token('[webform_submission:created]', webform_submission, [], options) }}</p>\r\n<p>Submitted by: {{ webform_token('[webform_submission:user]', webform_submission, [], options) }}</p>\r\n<p>Submitted values are:</p>\r\n{{ webform_token('[webform_submission:values]', webform_submission, [], options) }}\r\n"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: true
+      theme_name: ''
+      parameters: {  }
+      debug: false
 variants: {  }
