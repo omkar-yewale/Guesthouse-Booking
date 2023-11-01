@@ -48,6 +48,9 @@ function custom_booking_form_alter(&$form, &$form_state, $form_id) {
       $options = getRoomListOptions($guesthouseId);
       $form['elements']['booking_details']['assign_room']['#options'] = $options;
     }
+
+    //Added js and css for webform
+    $form['#attached']['library'][] = 'custom_booking/global-library';
   }
   // Called custom validation.
   $form['#validate'][] = 'custom_booking_webform_custom_booking_validation';
