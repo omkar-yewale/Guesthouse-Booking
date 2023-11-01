@@ -1,0 +1,8 @@
+global-library:
+  css:
+    theme:
+      assets/css/webform_settings.css: {}
+  js:
+    assets/js/webform_settings.js: {}
+  dependencies:
+    - core/jquery
