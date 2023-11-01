@@ -1,8 +1,6 @@
 (function ($) {
     $(document).ready(function(){
-
         if(('#edit-employee-details #edit-employee-status').length) {
-
             //hides employee name and email field when the default selected option is old - existing employee
             var currentValue = $("#edit-employee-details #edit-employee-status option:selected").val();
             if(currentValue == 'old') {
@@ -20,8 +18,7 @@
                     $('.form-item-employee-email').removeClass('field-display-none');
                 }
             });
-
         }
     });
-  })(jQuery);
+})(jQuery);
   
