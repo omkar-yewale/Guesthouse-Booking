@@ -5,4 +5,3 @@ custom_booking.settings:
     _title: 'Booking Cost Settings'
   requirements:
     _permission: 'administer site configuration'
-
