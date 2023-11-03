@@ -9,8 +9,8 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
+use Drupal\views\ViewExecutable;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -44,24 +44,76 @@ function custom_booking_form_alter(&$form, &$form_state, $form_id) {
     ];
     $guesthouseId = $form_state->getValue('guesthouse');
     if (!empty($guesthouseId)) {
+      $commonService = \Drupal::service('common_services');
       $guesthouseId = $form_state->getValue('guesthouse');
-      $options = getRoomListOptions($guesthouseId);
+      $startDate = $form_state->getValue('start_date');
+      $endDate = $form_state->getValue('end_date');
+      $options = $commonService->getRoomListOptions($guesthouseId, $startDate, $endDate);
       $form['elements']['booking_details']['assign_room']['#options'] = $options;
-    }
 
-    //Added js and css for webform
-    $form['#attached']['library'][] = 'custom_booking/global-library';
+      // Added js and css for webform.
+      $form['#attached']['library'][] = 'custom_booking/global-library';
+    }
   }
   // Called custom validation.
   $form['#validate'][] = 'custom_booking_webform_custom_booking_validation';
 }
 
 /**
- * Akax callback function.
+ * Implements hook_views_exposed_form_alter().
+ */
+function custom_booking_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
+  if ($form["#id"] == 'views-exposed-form-room-availability-page-1') {
+    // Added start and end date filter.
+    $form['start_date'] = [
+      '#type' => 'date',
+      '#title' => t('Start Date'),
+    ];
+    $form['end_date'] = [
+      '#type' => 'date',
+      '#title' => t('End Date'),
+    ];
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function custom_booking_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'room_availability') {
+    $view->element['#attached']['library'][] = 'custom_booking/global-library';
+  }
+}
+
+/**
+ * Implements hook_views_data().
+ */
+function custom_booking_views_data() {
+  $data['views']['table']['group'] = t('Custom Global');
+  $data['views']['table']['join'] = [
+    // #global is a special flag which allows a table to appear all the time.
+    '#global' => [],
+  ];
+
+  $data['views']['available_rooms'] = [
+    'title' => t('Available rooms'),
+    'help' => t('Show available room remaning capacity.'),
+    'field' => [
+      'id' => 'available_rooms',
+    ],
+  ];
+  return $data;
+}
+
+/**
+ * Ajax callback function.
  */
 function custom_booking_update_room_list_callback(array &$form, FormStateInterface $form_state) {
+  $commonService = \Drupal::service('common_services');
   $guesthouseId = $form_state->getValue('guesthouse');
-  $options = getRoomListOptions($guesthouseId);
+  $startDate = $form_state->getValue('start_date');
+  $endDate = $form_state->getValue('end_date');
+  $options = $commonService->getRoomListOptions($guesthouseId, $startDate, $endDate);
   // Add dynamic options to assign room field.
   $form['elements']['booking_details']['assign_room']['#options'] = $options;
   $field_room_element = \Drupal::service('renderer')->render($form['elements']['booking_details']['assign_room']);
@@ -112,20 +164,19 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
   $guesthouse = $form_state->getValue('guesthouse');
   $roomOccupancy = $form_state->getValue('room_occupancy');
   $roomId = $form_state->getValue('assign_room');
-  $route_match = \Drupal::routeMatch();
+  $commonService = \Drupal::service('common_services');
   // Get the submission ID from the route parameters.
-  $submission_id = $route_match->getParameter('webform_submission');
+  $submission_id = $commonService->getSubmissionId();
   if ($submission_id instanceof WebformSubmission) {
     $submission_id = $submission_id->id();
   }
   // Ensure that the end date is not before the start date.
-  if (strtotime($endDate) < strtotime($startDate)) {
+  if (!empty($startDate) && !empty($endDate) && strtotime($endDate) < strtotime($startDate)) {
     $form_state->setErrorByName('end_date', t('End date cannot be a past date compared to the start date.'));
   }
   else {
     // Check if there are overlapping bookings.
     if (!empty($guesthouse) && !empty($roomOccupancy) && !empty($roomId)) {
-      $commonService = \Drupal::service('common_services');
       $bookedRoomNids = $commonService->getBookedNids($startDate, $endDate, $roomId, $guesthouse);
       // For edit form confition.
       if (!empty($submission_id) || $submission_id != '') {
@@ -140,8 +191,7 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
         }
       }
       // Load room capacity.
-      $node = Node::load($roomId);
-      $roomCapacity = $node->field_room_capacity->value;
+      $roomCapacity = $commonService->getRoomCapacity($roomId);
       // Check for single occupancy.
       if ($roomOccupancy == 'single' && count($bookedRoomNids) >= 1) {
         $form_state->setErrorByName('assign_room', t('The room is fully booked for single occupancy during the selected date range.'));
@@ -157,26 +207,4 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
       }
     }
   }
-}
-
-/**
- * Get room list options value.
- */
-function getRoomListOptions($guesthouseId) {
-  $query = \Drupal::entityQuery('node')
-    ->condition('type', 'rooms')
-    ->condition('field_guesthouse', $guesthouseId)
-    ->accessCheck(TRUE);
-  $room_nids = $query->execute();
-  if (!empty($room_nids)) {
-    // $options = ['selected' => '- Select a value -'];
-    $room_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $rooms = $room_storage->loadMultiple($room_nids);
-
-    foreach ($rooms as $room) {
-      $options[$room->id()] = $room->label();
-    }
-  }
-
-  return $options;
 }

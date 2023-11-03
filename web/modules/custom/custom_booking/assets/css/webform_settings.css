@@ -1,3 +1,12 @@
-.field-display-none{
-    display: none;
+.field-display-none {
+  display: none;
+}
+.occupancy-green {
+  background-color: lightgreen;
+}
+.occupancy-orange {
+  background-color: orange;
+}
+.occupancy-red {
+  background-color: red;
 }
