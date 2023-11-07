@@ -1,0 +1,31 @@
+uuid: c650cc43-5c81-4643-9c06-e218b8a15295
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_booking
+_core:
+  default_config_hash: q21V88JDeFgd4wR9g3Mey_mnhD40kl79QzzPFixk7Xo
+title: 'Email Trigger for monthly bookings report'
+id: custom_booking_monthly_report
+weight: 0
+module: custom_booking
+callback: custom_booking_monthly_report
+scheduler:
+  id: crontab
+  configuration:
+    rules:
+      - '0 0 1 * *'
+launcher:
+  id: serial
+  configuration:
+    timeouts:
+      lock_timeout: 3600
+    launcher:
+      thread: 0
+logger:
+  id: database
+  configuration:
+    method: '3'
+    expire: 1209600
+    retain: 1000

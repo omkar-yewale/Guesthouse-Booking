@@ -23,13 +23,11 @@ elements: |-
       '#title': 'Start Date'
       '#required': true
       '#required_error': 'Start date is required.'
-      '#date_date_min': today
     end_date:
       '#type': date
       '#title': 'End Date'
       '#required': true
       '#required_error': 'End date is required.'
-      '#date_date_min': '+1 day'
   booking_details:
     '#type': webform_wizard_page
     '#title': 'Booking Details'

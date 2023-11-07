@@ -16,7 +16,7 @@
 /web/sites/default/files/js/*.js.gz
 # Ignore sensitive information
 /web/sites/*/settings.local.php
-
+/web/sites/default/private/backup_migrate/*
 # Ignore Drupal's file directory
 /web/sites/*/files/
 

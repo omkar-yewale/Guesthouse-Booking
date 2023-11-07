@@ -57,6 +57,7 @@ module:
   text: 0
   toolbar: 0
   tour: 0
+  ultimate_cron: 0
   update: 0
   user: 0
   views_data_export: 0
