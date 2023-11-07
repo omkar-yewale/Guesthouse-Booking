@@ -64,7 +64,7 @@ function custom_booking_form_alter(&$form, &$form_state, $form_id) {
  */
 function custom_booking_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
   if ($form["#id"] == 'views-exposed-form-room-availability-page-1') {
-    // Added start and end date filter.
+    // Added start and end date filter for room availablity page.
     $form['start_date'] = [
       '#type' => 'date',
       '#title' => t('Start Date'),
@@ -156,6 +156,13 @@ function custom_booking_webform_submission_presave(WebformSubmissionInterface $w
 }
 
 /**
+ * Cron job to send booking reports over email.
+ */
+function custom_booking_monthly_report() {
+  \Drupal::service('common_services')->bookingReport();
+}
+
+/**
  * Custom booking overlapping validation.
  */
 function custom_booking_webform_custom_booking_validation($form, FormStateInterface $form_state) {
@@ -207,4 +214,63 @@ function custom_booking_webform_custom_booking_validation($form, FormStateInterf
       }
     }
   }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function custom_booking_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'monthly_report_email_notification_key':
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+      $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+      $message['subject'] = $params['subject'];
+      $message['body'][] = $params['message'];
+      if (isset($params['attachments'])) {
+        $message['params']['files'] = $params['attachments'];
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_user_admin_settings_alter_alter().
+ */
+function custom_booking_form_user_admin_settings_alter(array &$form, FormStateInterface $form_state) {
+  // Alter admin for and add option for monthly report email.
+  $mail_config = \Drupal::config('user.mail');
+  $form['monthly_report_mail'] = [
+    '#type' => 'details',
+    '#title' => 'Send monthly booking report mail',
+    '#description' => 'Edit the email messages sent email.The list of available tokens that can be used in e-mails is provided below.',
+    '#group' => 'email',
+    '#weight' => 10,
+  ];
+
+  $form['monthly_report_mail']['monthly_mail_subject'] = [
+    '#type' => 'textfield',
+    '#title' => 'Subject',
+    '#default_value' => $mail_config->get('report_mail.subject'),
+    '#maxlength' => 180,
+  ];
+
+  $form['monthly_report_mail']['monthly_mail_body'] = [
+    '#type' => 'textarea',
+    '#title' => 'Body',
+    '#default_value' => $mail_config->get('report_mail.body'),
+    '#rows' => 12,
+  ];
+
+  $form['#submit'][] = 'custom_booking_form_user_admin_settings_submit';
+}
+
+/**
+ * Submit handler for admin settings form.
+ */
+function custom_booking_form_user_admin_settings_submit(&$form, FormStateInterface $form_state) {
+  $mail_config = \Drupal::configFactory()->getEditable('user.mail');
+  $mail_config->set('report_mail.subject', $form_state->getValue('monthly_mail_subject'));
+  $mail_config->set('report_mail.body', $form_state->getValue('monthly_mail_body'));
+  $mail_config->save();
 }

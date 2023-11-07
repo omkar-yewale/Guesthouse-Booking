@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - custom_booking
+title: 'Email Trigger for monthly bookings report'
+id: custom_booking_monthly_report
+weight: 0
+module: custom_booking
+callback: custom_booking_monthly_report
+scheduler:
+  id: crontab
+  configuration:
+    rules:
+      - '0 0 1 * *'
+launcher:
+  id: serial
+  configuration:
+    timeouts:
+      lock_timeout: 3600
+    launcher:
+      thread: 0
+logger:
+  id: database
+  configuration:
+    method: '3'
+    expire: 1209600
+    retain: 1000
