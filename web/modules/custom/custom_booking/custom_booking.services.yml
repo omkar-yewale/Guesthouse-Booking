@@ -1,4 +1,4 @@
 services:
   common_services:
     class: Drupal\custom_booking\Services\CommonServices
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.manager', '@config.factory', '@current_route_match', '@language_manager', '@messenger', '@logger.channel.default', '@plugin.manager.mail']
