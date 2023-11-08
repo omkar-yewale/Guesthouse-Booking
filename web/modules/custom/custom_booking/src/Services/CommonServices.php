@@ -265,8 +265,6 @@ class CommonServices {
    */
   public function getSubmissionId() {
     // Get the submission ID from the route parameters.
-    //$route_match = $this->currentRouteMatch->getRouteName();
-    $route_match = \Drupal::routeMatch();
     $submissionId = $this->currentRouteMatch->getParameter('webform_submission');
     if ($submissionId instanceof WebformSubmission) {
       $submissionId = $submissionId->id();
