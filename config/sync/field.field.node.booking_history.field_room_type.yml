@@ -1,0 +1,21 @@
+uuid: 115a0a08-c03a-4c9b-98eb-24cf8ba05cba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_type
+    - node.type.booking_history
+  module:
+    - options
+id: node.booking_history.field_room_type
+field_name: field_room_type
+entity_type: node
+bundle: booking_history
+label: 'Room type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

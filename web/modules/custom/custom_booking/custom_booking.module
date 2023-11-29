@@ -9,6 +9,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
 use Drupal\webform\Entity\WebformSubmission;
@@ -68,10 +69,13 @@ function custom_booking_form_views_exposed_form_alter(&$form, &$form_state, $for
     $form['start_date'] = [
       '#type' => 'date',
       '#title' => t('Start Date'),
+      '#default_value' => date("Y-m-d"),
     ];
+
     $form['end_date'] = [
       '#type' => 'date',
       '#title' => t('End Date'),
+      '#default_value' => date("Y-m-d"),
     ];
   }
 }
@@ -153,6 +157,95 @@ function custom_booking_webform_submission_presave(WebformSubmissionInterface $w
   else {
     $webform_submission->setElementData('total_amount', 0);
   }
+}
+
+/**
+ * Implements hook_webform_submission_insert().
+ */
+function custom_booking_webform_submission_insert(WebformSubmissionInterface $webform_submission) {
+  // Call a function to create or update the corresponding node.
+  create_update_booking_node($webform_submission);
+}
+
+/**
+ * Implements hook_webform_submission_update().
+ */
+function custom_booking_webform_submission_update(WebformSubmissionInterface $webform_submission) {
+  // Call a function to create or update the corresponding node.
+  create_update_booking_node($webform_submission);
+}
+
+/**
+ * Implements hook_webform_submission_delete().
+ */
+function custom_booking_webform_submission_delete(WebformSubmissionInterface $webform_submission) {
+  // Call a function to delete the corresponding node.
+  delete_booking_node($webform_submission);
+}
+
+/**
+ * Create or update the corresponding Booking node.
+ */
+function create_update_booking_node(WebformSubmissionInterface $webform_submission) {
+  // Extract data from the webform submission.
+  $data = $webform_submission->getData();
+  // Create all values array.
+  $nodeValues = [
+    'type' => 'booking_history',
+    'title' => t('Booking from: :start_date to :end_date', [':start_date' => $data['start_date'], ':end_date' => $data['end_date']]),
+    'field_submission_id' => $webform_submission->id(),
+    'field_booking_start_date' => $data['start_date'],
+    'field_booking_end_date' => $data['end_date'],
+    'field_guest_house' => $data['guesthouse'],
+    'field_room_name' => $data['assign_room'],
+    'field_room_type' => $data['room_occupancy'],
+  ];
+  // Check if a node already exists for this submission.
+  $existing_node = load_booking_node($webform_submission->id());
+
+  if ($existing_node) {
+    // Node exists, then update it.
+    $node = Node::load($existing_node->id());
+    foreach ($nodeValues as $fieldName => $fieldValue) {
+      $node->set($fieldName, $fieldValue);
+    }
+    $node->save();
+  }
+  else {
+    // Node doesn't exist, then create it.
+    $node = Node::create($nodeValues);
+    $node->save();
+  }
+}
+
+/**
+ * Delete the corresponding Booking node.
+ */
+function delete_booking_node(WebformSubmissionInterface $webform_submission) {
+  // Extract data from the webform submission.
+  $submissionId = $webform_submission->id();
+
+  // Load the Booking node based on webform submission ID.
+  $node = load_booking_node($submissionId);
+
+  if ($node) {
+    // Node exists, delete it.
+    $node->delete();
+  }
+}
+
+/**
+ * Load the Booking node based on webform submission ID.
+ */
+function load_booking_node($submissionId) {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'booking_history')
+    ->condition('field_submission_id', $submissionId)
+    ->accessCheck(TRUE)
+    ->range(0, 1);
+
+  $nids = $query->execute();
+  return reset($nids) ? Node::load(reset($nids)) : NULL;
 }
 
 /**

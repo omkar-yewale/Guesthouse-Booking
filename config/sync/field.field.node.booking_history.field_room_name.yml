@@ -1,0 +1,29 @@
+uuid: c4b6dc9a-8b38-400c-9699-01d603931514
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_name
+    - node.type.booking_history
+    - node.type.rooms
+id: node.booking_history.field_room_name
+field_name: field_room_name
+entity_type: node
+bundle: booking_history
+label: 'Room Name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      rooms: rooms
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

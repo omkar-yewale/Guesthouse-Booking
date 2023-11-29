@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f00ed06a401a83f679c72b25bc37a70",
+    "content-hash": "e39f3e420ab820f118c8155792677f00",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1639,6 +1639,93 @@
             "support": {
                 "source": "https://www.drupal.org/project/jquery_ui_touch_punch",
                 "issues": "https://www.drupal.org/project/issues/jquery_ui_touch_punch"
+            }
+        },
+        {
+            "name": "drupal/login_destination",
+            "version": "2.0.0-beta6",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/login_destination.git",
+                "reference": "8.x-2.0-beta6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/login_destination-8.x-2.0-beta6.zip",
+                "reference": "8.x-2.0-beta6",
+                "shasum": "f48647adf7b19a722534ef54058a824d677af217"
+            },
+            "require": {
+                "drupal/core": "^8.7.10 || ^9 || ^10"
+            },
+            "require-dev": {
+                "drupal/admin_toolbar": "^1.23",
+                "drupal/admin_toolbar_tools": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.0-beta6",
+                    "datestamp": "1680182197",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "rsvelko",
+                    "homepage": "https://www.drupal.org/u/rsvelko",
+                    "role": "Creator, Maintainer"
+                },
+                {
+                    "name": "Other Contributors",
+                    "homepage": "https://www.drupal.org/node/69051/committers",
+                    "role": "Contributors"
+                },
+                {
+                    "name": "ddrozdik",
+                    "homepage": "https://www.drupal.org/user/574124"
+                },
+                {
+                    "name": "jng12",
+                    "homepage": "https://www.drupal.org/user/204316"
+                },
+                {
+                    "name": "marcp",
+                    "homepage": "https://www.drupal.org/user/20885"
+                },
+                {
+                    "name": "mithy",
+                    "homepage": "https://www.drupal.org/user/258911"
+                },
+                {
+                    "name": "moshe weitzman",
+                    "homepage": "https://www.drupal.org/user/23"
+                },
+                {
+                    "name": "Oliver Huynh",
+                    "homepage": "https://www.drupal.org/user/243730"
+                },
+                {
+                    "name": "perennial.sky",
+                    "homepage": "https://www.drupal.org/user/2622667"
+                },
+                {
+                    "name": "rsvelko",
+                    "homepage": "https://www.drupal.org/user/337401"
+                }
+            ],
+            "description": "Customizes the destination the user is redirected to after login/logout/registration/one-time login.",
+            "homepage": "https://drupal.org/project/login_destination",
+            "support": {
+                "source": "https://git.drupalcode.org/project/login_destination",
+                "issues": "https://drupal.org/project/issues/login_destination"
             }
         },
         {
@@ -7772,6 +7859,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "drupal/conditional_fields": 15,
+        "drupal/login_destination": 10,
         "drupal/ultimate_cron": 15,
         "drupal/webform": 5,
         "drupal/webform_query": 15

@@ -271,40 +271,56 @@ settings:
 access:
   create:
     roles:
-      - anonymous
-      - authenticated
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   view_any:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   update_any:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   delete_any:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   purge_any:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   view_own:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   update_own:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   delete_own:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   administer:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
   test:
@@ -312,7 +328,9 @@ access:
     users: {  }
     permissions: {  }
   configuration:
-    roles: {  }
+    roles:
+      - administrator
+      - admin_team
     users: {  }
     permissions: {  }
 handlers:

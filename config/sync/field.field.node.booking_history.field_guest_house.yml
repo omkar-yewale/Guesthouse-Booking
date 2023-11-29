@@ -1,0 +1,29 @@
+uuid: 6739fbe8-fcf2-4720-8362-1ee9a2a18ccc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_guest_house
+    - node.type.booking_history
+    - taxonomy.vocabulary.guesthouse
+id: node.booking_history.field_guest_house
+field_name: field_guest_house
+entity_type: node
+bundle: booking_history
+label: 'Guest house'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      guesthouse: guesthouse
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

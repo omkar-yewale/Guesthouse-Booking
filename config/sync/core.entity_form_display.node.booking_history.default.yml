@@ -1,0 +1,118 @@
+uuid: 02594d5e-9707-4060-9d3d-a7fe47fdecdb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.booking_history.field_booking_end_date
+    - field.field.node.booking_history.field_booking_start_date
+    - field.field.node.booking_history.field_guest_house
+    - field.field.node.booking_history.field_room_name
+    - field.field.node.booking_history.field_room_type
+    - field.field.node.booking_history.field_submission_id
+    - node.type.booking_history
+  module:
+    - datetime
+    - path
+id: node.booking_history.default
+targetEntityType: node
+bundle: booking_history
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_booking_end_date:
+    type: datetime_default
+    weight: 123
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_booking_start_date:
+    type: datetime_default
+    weight: 122
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_guest_house:
+    type: entity_reference_autocomplete
+    weight: 124
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_room_name:
+    type: entity_reference_autocomplete
+    weight: 125
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_room_type:
+    type: options_select
+    weight: 126
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_submission_id:
+    type: string_textfield
+    weight: 121
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

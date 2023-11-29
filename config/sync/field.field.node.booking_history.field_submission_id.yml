@@ -1,0 +1,19 @@
+uuid: 7cde05d0-b9b9-4bc6-9e1f-d628c2c30437
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_submission_id
+    - node.type.booking_history
+id: node.booking_history.field_submission_id
+field_name: field_submission_id
+entity_type: node
+bundle: booking_history
+label: 'Submission Id'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

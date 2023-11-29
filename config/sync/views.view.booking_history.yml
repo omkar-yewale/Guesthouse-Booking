@@ -1707,7 +1707,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: "<div id=\"block-claro-local-actions\">\r\n  <ul class=\"local-actions\">\r\n    <li class=\"local-actions__item1\"><a href=\"/Guesthouse-Booking/web/form/create-booking\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Booking</a></li>\r\n  </ul>\r\n</div>"
+            value: "<div id=\"block-claro-local-actions\">\r\n  <div class=\"local-actions\">\r\n    <span class=\"local-actions__item1\"><a href=\"/Guesthouse-Booking/web/form/create-booking\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Booking</a></span>\r\n    </div>\r\n</div>"
             format: full_html
           tokenize: false
       display_extenders: {  }
