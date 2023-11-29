@@ -1,0 +1,20 @@
+uuid: 5c11a8e9-071a-433f-bdc7-029fa0d887cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_guest_house
+field_name: field_guest_house
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

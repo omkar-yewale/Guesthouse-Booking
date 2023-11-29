@@ -1,0 +1,19 @@
+uuid: b1135b2d-3c00-4312-95d8-a85c573f815c
+langcode: en
+status: true
+dependencies: {  }
+name: logout_redirect
+label: 'Logout Redirect'
+triggers:
+  logout: logout
+destination_path: 'internal:/user/login'
+pages_type: 0
+pages: ''
+language: ''
+roles:
+  authenticated: authenticated
+  content_editor: content_editor
+  administrator: administrator
+  admin_team: admin_team
+weight: 0
+enabled: true

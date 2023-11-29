@@ -1,0 +1,32 @@
+uuid: 56ce00b7-1475-4540-bb8f-f45b15b00413
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.booking_history.field_booking_end_date
+    - field.field.node.booking_history.field_booking_start_date
+    - field.field.node.booking_history.field_guest_house
+    - field.field.node.booking_history.field_room_name
+    - field.field.node.booking_history.field_room_type
+    - field.field.node.booking_history.field_submission_id
+    - node.type.booking_history
+  module:
+    - user
+id: node.booking_history.teaser
+targetEntityType: node
+bundle: booking_history
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_booking_end_date: true
+  field_booking_start_date: true
+  field_guest_house: true
+  field_room_name: true
+  field_room_type: true
+  field_submission_id: true

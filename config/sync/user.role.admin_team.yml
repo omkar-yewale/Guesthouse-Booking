@@ -1,9 +1,27 @@
 uuid: 9a42bb68-5a3d-44ce-8bf1-bb8668944662
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.booking_history
+    - node.type.rooms
+  module:
+    - node
+    - webform_submission_log
 id: admin_team
 label: 'Admin Team'
 weight: 4
 is_admin: null
-permissions: {  }
+permissions:
+  - 'access webform submission log'
+  - 'create booking_history content'
+  - 'create rooms content'
+  - 'delete any booking_history content'
+  - 'delete booking_history revisions'
+  - 'delete own booking_history content'
+  - 'delete own rooms content'
+  - 'delete rooms revisions'
+  - 'edit any booking_history content'
+  - 'edit any rooms content'
+  - 'edit own booking_history content'
+  - 'edit own rooms content'

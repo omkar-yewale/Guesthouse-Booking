@@ -116,8 +116,8 @@ class AvailableRooms extends FieldPluginBase {
     $nid = $node->get('nid')->getValue()[0]['value'];
     $capacity = $node->get('field_room_capacity')->getValue()[0]['value'];
     $guesthouseId = $node->get('field_guesthouse')->getValue()[0]['target_id'];
-    $startDate = $this->request->query->get('start_date');
-    $endDate = $this->request->query->get('end_date');
+    $startDate = $this->request->query->get('start_date') ?? date("Y-m-d");
+    $endDate = $this->request->query->get('end_date') ?? date("Y-m-d");
     $class = 'occupancy-green';
     $output = '';
     if ($startDate != '' && $endDate != '') {
@@ -134,14 +134,14 @@ class AvailableRooms extends FieldPluginBase {
           }
           else {
             $available = $capacity - count($bookedRoomNids);
-            $output = $available > 0 ? $available . ' Slot' . ($available > 1 ? 's' : '') . ' available' : 'Fully Booked';
+            $output = $available > 0 ? $available . ' Bed' . ($available > 1 ? 's' : '') . ' available' : 'Fully Booked';
             $class = $available > 0 ? 'occupancy-green' : 'occupancy-red';
           }
         }
       }
       else {
         $available = $capacity - count($bookedRoomNids);
-        $output = $available > 0 ? $available . ' Slot' . ($available > 1 ? 's' : '') . ' available' : 'Fully Booked';
+        $output = $available > 0 ? $available . ' Bed' . ($available > 1 ? 's' : '') . ' available' : 'Fully Booked';
         $class = $available > 0 ? 'occupancy-green' : 'occupancy-red';
       }
     }
