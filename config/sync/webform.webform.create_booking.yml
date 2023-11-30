@@ -358,16 +358,54 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      subject: _default
-      body: "<p>Submitted on {{ webform_token('[webform_submission:created]', webform_submission, [], options) }}</p>\r\n<p>Submitted by: {{ webform_token('[webform_submission:user]', webform_submission, [], options) }}</p>\r\n<p>Submitted values are:</p>\r\n{{ webform_token('[webform_submission:values]', webform_submission, [], options) }}\r\n"
+      subject: 'Rishabh Software Guesthouse Booking'
+      body: "Hi [webform_submission:values:employee_name],\r\n\r\nYour reservation at Rishabh Software Guesthouse has been successfully created.\r\n\r\n[webform_submission:values]\r\n\r\nCreated by: [webform_submission:user]\r\nCreated on [webform_submission:created]\r\n\r\nFor more details please contact Admin team.\r\n\r\nThank you.\r\n"
+      excluded_elements:
+        employee_name: employee_name
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: false
+      attachments: false
+      twig: false
+      theme_name: ''
+      parameters: {  }
+      debug: false
+  submission_update:
+    id: email
+    handler_id: submission_update
+    label: 'Submission Update'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 1
+    settings:
+      states:
+        - updated
+      to_mail: '[webform_submission:values:employee_email:raw]'
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: _default
+      cc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: '[site:mail]'
+      sender_mail: ''
+      sender_name: ''
+      subject: 'Rishabh Software Guesthouse Booking'
+      body: "Hi [webform_submission:values:employee_name],\r\n\r\nYour reservation at Rishabh Software Guesthouse has been successfully updated.\r\n\r\n[webform_submission:values]\r\n\r\nCreated by: [webform_submission:user]\r\nCreated on [webform_submission:created]\r\n\r\nFor more details please contact Admin team.\r\n\r\nThank you.\r\n"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: false
       exclude_attachments: false
-      html: true
+      html: false
       attachments: false
-      twig: true
+      twig: false
       theme_name: ''
       parameters: {  }
       debug: false
