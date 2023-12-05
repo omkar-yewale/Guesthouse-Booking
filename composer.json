@@ -28,6 +28,7 @@
         "drupal/fullcalendar_view": "^5.1",
         "drupal/login_destination": "^2.0@beta",
         "drupal/maillog": "^1.1",
+        "drupal/simple_gmap": "^3.1",
         "drupal/smtp": "^1.2",
         "drupal/ultimate_cron": "^2.0@alpha",
         "drupal/views_data_export": "^1.3",
