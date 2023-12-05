@@ -872,18 +872,26 @@ display:
               content_editor: '0'
               administrator: '0'
               admin_team: '0'
-          is_grouped: false
+          is_grouped: true
           group_info:
-            label: ''
+            label: 'Is chargeable'
             description: ''
-            identifier: ''
+            identifier: is_chargable
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1:
+                title: 'Yes'
+                operator: '='
+                value: '1'
+              2:
+                title: 'No'
+                operator: '='
+                value: '0'
       filter_groups:
         operator: AND
         groups:
