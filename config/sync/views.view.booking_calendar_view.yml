@@ -624,7 +624,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: text
-          empty: false
+          empty: true
           content:
             value: "<div id=\"block-claro-local-actions\">\r\n  <div class=\"local-actions\">\r\n    <span class=\"local-actions__item1\"><a href=\"[site:base-url]/form/create-booking\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Booking</a></span>\r\n    </div>\r\n</div>"
             format: full_html
