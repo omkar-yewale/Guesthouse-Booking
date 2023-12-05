@@ -1138,8 +1138,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           action_title: Action
-          include_exclude: exclude
-          selected_actions: {  }
+          include_exclude: include
+          selected_actions:
+            - webform_submission_delete_action
         webform_submission_value_6:
           id: webform_submission_value_6
           table: webform_submission_field_create_booking_start_date
