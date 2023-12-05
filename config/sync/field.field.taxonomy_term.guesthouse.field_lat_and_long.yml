@@ -1,0 +1,21 @@
+uuid: b10076ff-f992-4df8-a464-46f525dc4cb3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_lat_and_long
+    - taxonomy.vocabulary.guesthouse
+id: taxonomy_term.guesthouse.field_lat_and_long
+field_name: field_lat_and_long
+entity_type: taxonomy_term
+bundle: guesthouse
+label: 'Lat and long'
+description: 'Enter guesthouse location in latitude and longitude in comma separated.'
+required: false
+translatable: false
+default_value:
+  -
+    value: '22.268973864081506, 73.1444073070306'
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
@@ -137,6 +138,7 @@ function custom_booking_webform_submission_presave(WebformSubmissionInterface $w
   $employeeStatus = $webform_submission->getElementData('employee_status');
   $emp = $webform_submission->getElementData('select_employee');
   $isChargable = $webform_submission->getElementData('is_chargeable');
+  $guesthouse = $webform_submission->getElementData('guesthouse');
   // Add exisiting employee name and email in field.
   if ($employeeStatus == 'old' && !empty($emp)) {
     $user = User::load($emp);
@@ -144,6 +146,16 @@ function custom_booking_webform_submission_presave(WebformSubmissionInterface $w
     $name = $user->get('name')->value;
     $webform_submission->setElementData('employee_name', $name);
     $webform_submission->setElementData('employee_email', $email);
+  }
+  // Guesthouse location and address.
+  if (!empty($guesthouse)) {
+    // Load the guesthouse term.
+    $term = Term::load($guesthouse);
+    $add = $term->get('field_address')->value;
+    $location = 'https://maps.google.com/?q='. str_replace(' ', '', $term->get('field_lat_and_long')->value);
+    // Add address ano location in booking.
+    $webform_submission->setElementData('guesthouse_address', $add);
+    $webform_submission->setElementData('location', $location);
   }
   // Count total chargs and add it into the total amount field.
   if ($isChargable == 1) {

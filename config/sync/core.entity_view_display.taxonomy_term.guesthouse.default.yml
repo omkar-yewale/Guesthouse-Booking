@@ -1,0 +1,31 @@
+uuid: ee55ac66-e2e7-471c-9fea-c011cf508ab7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.guesthouse.field_address
+    - field.field.taxonomy_term.guesthouse.field_lat_and_long
+    - taxonomy.vocabulary.guesthouse
+id: taxonomy_term.guesthouse.default
+targetEntityType: taxonomy_term
+bundle: guesthouse
+mode: default
+content:
+  field_address:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_lat_and_long:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  description: true

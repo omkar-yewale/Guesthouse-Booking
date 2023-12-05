@@ -1,0 +1,47 @@
+uuid: 3ec20d1d-d28d-472d-88fe-43ea16b36ac8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.guesthouse.field_address
+    - field.field.taxonomy_term.guesthouse.field_lat_and_long
+    - taxonomy.vocabulary.guesthouse
+id: taxonomy_term.guesthouse.default
+targetEntityType: taxonomy_term
+bundle: guesthouse
+mode: default
+content:
+  field_address:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_lat_and_long:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  description: true
+  path: true

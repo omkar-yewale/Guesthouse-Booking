@@ -5,23 +5,29 @@ dependencies:
   config:
     - node.type.booking_history
     - node.type.rooms
+    - taxonomy.vocabulary.guesthouse
   module:
     - node
+    - taxonomy
     - webform_submission_log
 id: admin_team
 label: 'Admin Team'
 weight: 4
 is_admin: null
 permissions:
+  - 'access taxonomy overview'
   - 'access webform submission log'
   - 'create booking_history content'
   - 'create rooms content'
+  - 'create terms in guesthouse'
   - 'delete any booking_history content'
   - 'delete booking_history revisions'
   - 'delete own booking_history content'
   - 'delete own rooms content'
   - 'delete rooms revisions'
+  - 'delete terms in guesthouse'
   - 'edit any booking_history content'
   - 'edit any rooms content'
   - 'edit own booking_history content'
   - 'edit own rooms content'
+  - 'edit terms in guesthouse'

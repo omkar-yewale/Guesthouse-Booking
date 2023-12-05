@@ -1,0 +1,21 @@
+uuid: f0c5895d-3e1f-484b-b0ea-8ccf8eb2edc1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_address
+    - taxonomy.vocabulary.guesthouse
+id: taxonomy_term.guesthouse.field_address
+field_name: field_address
+entity_type: taxonomy_term
+bundle: guesthouse
+label: Address
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 'Plot 66, Padra Road, beside Sigil India, Atladara, Vadodara, Gujarat 390012'
+default_value_callback: ''
+settings: {  }
+field_type: string

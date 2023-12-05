@@ -132,6 +132,16 @@ elements: |-
       '#title': 'Total amount'
       '#readonly': true
       '#min': 0
+    guesthouse_address:
+      '#type': textarea
+      '#title': 'Guesthouse Address'
+      '#disabled': true
+      '#default_value': 'Rishabh Software, Plot 66, Padra Road, beside Sigil India, Atladara, Vadodara, Gujarat 390012'
+    location:
+      '#type': url
+      '#title': Location
+      '#disabled': true
+      '#default_value': 'https://maps.google.com/?q=22.26885304542968,73.1444815491498'
 css: ''
 javascript: ''
 settings:
