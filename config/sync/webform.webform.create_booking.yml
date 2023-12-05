@@ -18,16 +18,20 @@ elements: |-
     '#type': webform_wizard_page
     '#title': 'Booking Dates'
     '#open': true
-    start_date:
-      '#type': date
-      '#title': 'Start Date'
-      '#required': true
-      '#required_error': 'Start date is required.'
-    end_date:
-      '#type': date
-      '#title': 'End Date'
-      '#required': true
-      '#required_error': 'End date is required.'
+    flexbox:
+      '#type': webform_flexbox
+      start_date:
+        '#type': date
+        '#title': 'Start Date'
+        '#required': true
+        '#required_error': 'Start date is required.'
+        '#datepicker': true
+      end_date:
+        '#type': date
+        '#title': 'End Date'
+        '#required': true
+        '#required_error': 'End date is required.'
+        '#datepicker': true
   booking_details:
     '#type': webform_wizard_page
     '#title': 'Booking Details'
