@@ -612,7 +612,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: "<div id=\"block-claro-local-actions\">\r\n  <div class=\"local-actions\">\r\n    <span class=\"local-actions__item1\"><a href=\"[site:base-url]/node/add/rooms\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Guest House</a></span>\r\n    </div>\r\n</div>\r\n<div id=\"block-claro-local-actions\">\r\n  <div class=\"local-actions\">\r\n    <span class=\"local-actions__item1\"><a href=\"[site:base-url]/admin/structure/taxonomy/manage/guesthouse/add\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Room</a></span>\r\n    </div>\r\n</div>"
+            value: "<div id=\"block-claro-local-actions\">\r\n  <div class=\"local-actions\">\r\n    <span class=\"local-actions__item1\"><a href=\"[site:base-url]/admin/structure/taxonomy/manage/guesthouse/add\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Guest House</a></span>\r\n    </div>\r\n</div>\r\n<div id=\"block-claro-local-actions\">\r\n  <div class=\"local-actions\">\r\n    <span class=\"local-actions__item1\"><a href=\"[site:base-url]/node/add/rooms\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Room</a></span>\r\n    </div>\r\n</div>"
             format: full_html
           tokenize: false
       footer: {  }

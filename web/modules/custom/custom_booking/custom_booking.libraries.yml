@@ -2,7 +2,12 @@ global-library:
   css:
     theme:
       assets/css/webform_settings.css: {}
+      assets/css/BuroRaDer.DateRangePicker.css: {}
   js:
+    //ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js: {type: external}
+    //code.jquery.com/ui/1.13.2/jquery-ui.min.js: {}
+    //cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js: {}
     assets/js/webform_settings.js: {}
+    assets/js/BuroRaDer.DateRangePicker.js: {}
   dependencies:
     - core/jquery
