@@ -33,6 +33,9 @@ function custom_booking_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_form_alter().
  */
 function custom_booking_form_alter(&$form, &$form_state, $form_id) {
+  // Get current user role.
+  $currentUser = \Drupal::currentUser();
+  $roles = $currentUser->getRoles();
   // Weform form alter.
   if ($form_id == 'webform_submission_create_booking_add_form' || $form_id == 'webform_submission_create_booking_edit_form') {
     // Attached jquery daterange library.
@@ -71,9 +74,19 @@ function custom_booking_form_alter(&$form, &$form_state, $form_id) {
 
   // Guesthouse taxonomy form alter.
   if ($form_id == 'taxonomy_term_guesthouse_form') {
-    $form['#title'] = t('Add Guesthouse');
+    if (in_array('admin_team', $roles)) {
+      $form['#title'] = t('Add Guesthouse');
+      $form['relations']['#access'] = FALSE;
+      $form['actions']['overview']['#access'] = FALSE;
+    }
   }
 
+  // Hide preview button from room form.
+  if ($form_id == 'node_rooms_form') {
+    if (in_array('admin_team', $roles)) {
+      $form['actions']['preview']['#access'] = FALSE;
+    }
+  }
 }
 
 /**

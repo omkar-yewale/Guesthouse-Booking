@@ -13,6 +13,6 @@ name: Rooms
 type: rooms
 description: 'Create rooms for individual guesthouses as per their available capacity.'
 help: ''
-new_revision: true
+new_revision: false
 preview_mode: 1
 display_submitted: true

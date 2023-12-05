@@ -117,6 +117,9 @@ elements: |-
         required:
           ':input[name="employee_status"]':
             value: new
+      '#wrapper_attributes':
+        class:
+          - field-display-none
     employee_email:
       '#type': email
       '#title': 'Employee email'
@@ -127,6 +130,9 @@ elements: |-
         required:
           ':input[name="employee_status"]':
             value: new
+      '#wrapper_attributes':
+        class:
+          - field-display-none
     is_chargeable:
       '#type': checkbox
       '#title': 'Is chargeable'
@@ -135,17 +141,24 @@ elements: |-
       '#type': number
       '#title': 'Total amount'
       '#readonly': true
+      '#default_value': '0'
       '#min': 0
     guesthouse_address:
       '#type': textarea
       '#title': 'Guesthouse Address'
       '#disabled': true
       '#default_value': 'Rishabh Software, Plot 66, Padra Road, beside Sigil India, Atladara, Vadodara, Gujarat 390012'
+      '#wrapper_attributes':
+        class:
+          - field-display-none
     location:
       '#type': url
       '#title': Location
       '#disabled': true
       '#default_value': 'https://maps.google.com/?q=22.26885304542968,73.1444815491498'
+      '#wrapper_attributes':
+        class:
+          - field-display-none
 css: ''
 javascript: ''
 settings:
