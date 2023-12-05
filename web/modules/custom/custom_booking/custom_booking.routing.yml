@@ -4,4 +4,4 @@ custom_booking.settings:
     _form: '\Drupal\custom_booking\Form\BookingPriceSettingsForm'
     _title: 'Booking Cost Settings'
   requirements:
-    _permission: 'administer site configuration'
+    _role: 'administrator+admin_team'

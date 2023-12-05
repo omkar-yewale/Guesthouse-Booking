@@ -69,6 +69,11 @@ function custom_booking_form_alter(&$form, &$form_state, $form_id) {
     $form['#validate'][] = 'custom_booking_webform_custom_booking_validation';
   }
 
+  // Guesthouse taxonomy form alter.
+  if ($form_id == 'taxonomy_term_guesthouse_form') {
+    $form['#title'] = t('Add Guesthouse');
+  }
+
 }
 
 /**
