@@ -10,3 +10,14 @@
 .occupancy-red {
   background-color: red;
 }
+
+/* CSS */
+.room-details-btn-wrapper {
+  display: flex;
+}
+/* Style for each div */
+.room-details-btn1 .room-details-btn2 {
+  flex: 1;
+  padding: 20px;
+  box-sizing: border-box;
+}
