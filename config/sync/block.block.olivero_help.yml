@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - help
+    - user
   theme:
     - olivero
 _core:
@@ -19,4 +20,11 @@ settings:
   label: Help
   label_display: '0'
   provider: help
-visibility: {  }
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
