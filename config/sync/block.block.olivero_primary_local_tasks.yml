@@ -2,6 +2,8 @@ uuid: f78cc02f-481a-4a8d-b562-5666c4658cc8
 langcode: en
 status: true
 dependencies:
+  module:
+    - user
   theme:
     - olivero
 _core:
@@ -19,4 +21,11 @@ settings:
   provider: core
   primary: true
   secondary: false
-visibility: {  }
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
