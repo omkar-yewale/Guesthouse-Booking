@@ -488,7 +488,20 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'No room created.'
+            format: basic_html
+          tokenize: false
       sorts:
         created:
           id: created
@@ -616,7 +629,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: "<div class=\"room-details-btn-wrapper\">\r\n<div id=\"block-claro-local-actions\" class=\"room-details-btn1\">\r\n<div class=\"local-actions\">\r\n<span class=\"local-actions__item1\"><a href=\"[site:base-url]/admin/structure/taxonomy/manage/guesthouse/add\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Guest House</a></span>\r\n</div>\r\n</div>\r\n<div id=\"block-claro-local-actions\" class=\"room-details-btn2\">\r\n<div class=\"local-actions\">\r\n<span class=\"local-actions__item1\"><a href=\"[site:base-url]/node/add/rooms\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Room</a></span>\r\n</div>\r\n</div>\r\n</div>"
+            value: "<div class=\"room-details-btn-wrapper\">\r\n<div id=\"block-claro-local-actions\" class=\"room-details-btn1\">\r\n<div class=\"local-actions\">\r\n<span class=\"local-actions__item1\"><a href=\"[site:base-url]/add/guesthouse\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Guest House</a></span>\r\n</div>\r\n</div>\r\n<div id=\"block-claro-local-actions\" class=\"room-details-btn2\">\r\n<div class=\"local-actions\">\r\n<span class=\"local-actions__item1\"><a href=\"[site:base-url]/node/add/rooms\"\r\n        class=\"button button--action button--primary\" data-drupal-link-system-path=\"form/create-booking\" target=\"_blank\">Create New Room</a></span>\r\n</div>\r\n</div>\r\n</div>"
             format: full_html
           tokenize: false
       footer: {  }
