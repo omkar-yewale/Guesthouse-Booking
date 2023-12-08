@@ -417,3 +417,14 @@ function custom_booking_preprocess_views_view(array &$variables) {
     $variables['#attached']['library'][] = 'custom_booking/global-library';
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function custom_booking_theme($existing, $type, $theme, $path) {
+  return [
+    'error_404' => [
+      'variables' => ['on404' => NULL],
+    ],
+  ];
+}
