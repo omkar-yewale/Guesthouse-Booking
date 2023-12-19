@@ -24,5 +24,21 @@
                 }
             });
         }
+
+        // Room Avaiblity.
+        $('td.views-field-available-rooms').each(function () {
+            if ($(this).find('.occupancy-green').length > 0 || $(this).find('.occupancy-yellow').length > 0) {
+                // Find the corresponding anchor tag in the next td
+                var anchorTag = $(this).next('td').find('.add-booking');
+                // Remove the 'disabled' class to the anchor tag
+                anchorTag.removeClass('disabled');
+            }
+            if ($(this).find('.occupancy-green').length > 0) {
+                // Find the corresponding anchor tag in the next td
+                var anchorTag = $(this).next('td').find('.view-booking');
+                // Remove the 'disabled' class to the anchor tag
+                anchorTag.addClass('disabled');
+            }
+        });
     });
 })(jQuery);
