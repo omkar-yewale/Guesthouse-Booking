@@ -386,9 +386,8 @@ handlers:
       sender_mail: ''
       sender_name: ''
       subject: 'Rishabh Software Guesthouse Booking'
-      body: "Hi [webform_submission:values:employee_name],\r\n\r\nYour reservation at Rishabh Software Guesthouse has been successfully created.\r\n\r\n[webform_submission:values]\r\n\r\nCreated by: [webform_submission:user]\r\nCreated on [webform_submission:created]\r\n\r\nFor more details please contact Admin team.\r\n\r\nThank you.\r\n"
-      excluded_elements:
-        employee_name: employee_name
+      body: "Hi [webform_submission:values:employee_name],\r\n\r\nYour reservation at Rishabh Software Guesthouse has been successfully created.\r\n\r\nBooking Dates\r\n-------------\r\nStart Date: [webform_submission:values:start_date]\r\nEnd Date: [webform_submission:values:end_date]\r\n\r\nBooking Details\r\n--------------\r\nGuest House: [webform_submission:values:guesthouse:label]\r\nRoom Occupancy: [webform_submission:values:room_occupancy]\r\nAssign Room: [webform_submission:values:assign_room:label]\r\n\r\nEmployee Details\r\n---------------\r\nEmployee Status: [webform_submission:values:employee_status]\r\nEmployee Name: [webform_submission:values:employee_name]\r\nEmployee Email: [webform_submission:values:employee_email]\r\nIs Chargeable: [webform_submission:values:is_chargeable]\r\nTotal Amount: [webform_submission:values:total_amount]\r\nGuest House Address: [webform_submission:values:guesthouse_address]\r\nLocation: [webform_submission:values:location]\r\n\r\nCreated by: [webform_submission:user]\r\nCreated on [webform_submission:created]\r\n\r\nFor more details please contact Admin team.\r\n\r\nThank you.\r\n"
+      excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: false
@@ -424,7 +423,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       subject: 'Rishabh Software Guesthouse Booking'
-      body: "Hi [webform_submission:values:employee_name],\r\n\r\nYour reservation at Rishabh Software Guesthouse has been successfully updated.\r\n\r\n[webform_submission:values]\r\n\r\nCreated by: [webform_submission:user]\r\nCreated on [webform_submission:created]\r\n\r\nFor more details please contact Admin team.\r\n\r\nThank you.\r\n"
+      body: "Hi [webform_submission:values:employee_name],\r\n\r\nYour reservation at Rishabh Software Guesthouse has been successfully updated.\r\n\r\nBooking Dates\r\n-------------\r\nStart Date: [webform_submission:values:start_date]\r\nEnd Date: [webform_submission:values:end_date]\r\n\r\nBooking Details\r\n--------------\r\nGuest House: [webform_submission:values:guesthouse:label]\r\nRoom Occupancy: [webform_submission:values:room_occupancy]\r\nAssign Room: [webform_submission:values:assign_room:label]\r\n\r\nEmployee Details\r\n---------------\r\nEmployee Status: [webform_submission:values:employee_status]\r\nEmployee Name: [webform_submission:values:employee_name]\r\nEmployee Email: [webform_submission:values:employee_email]\r\nIs Chargeable: [webform_submission:values:is_chargeable]\r\nTotal Amount: [webform_submission:values:total_amount]\r\nGuest House Address: [webform_submission:values:guesthouse_address]\r\nLocation: [webform_submission:values:location]\r\n\r\nCreated by: [webform_submission:user]\r\nCreated on [webform_submission:created]\r\n\r\nFor more details please contact Admin team.\r\n\r\nThank you.\r\n"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
