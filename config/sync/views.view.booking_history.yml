@@ -577,6 +577,18 @@ display:
               secondary_open: false
               reset_button_always_show: false
             filter:
+              webform_submission_value_4:
+                plugin_id: bef_datepicker
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  is_secondary: false
+              webform_submission_value_5:
+                plugin_id: bef_datepicker
+                advanced:
+                  placeholder_text: ''
+                  collapsible: false
+                  is_secondary: false
               combine:
                 plugin_id: default
                 advanced:
@@ -657,6 +669,104 @@ display:
           granularity: second
       arguments: {  }
       filters:
+        webform_submission_value_4:
+          id: webform_submission_value_4
+          table: webform_submission_field_create_booking_start_date
+          field: webform_submission_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: webform_submission_date_filter
+          operator: '>='
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+          group: 1
+          exposed: true
+          expose:
+            operator_id: webform_submission_value_4_op
+            label: 'Start Date'
+            description: ''
+            use_operator: false
+            operator: webform_submission_value_4_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: webform_submission_value_4
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+              admin_team: '0'
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        webform_submission_value_5:
+          id: webform_submission_value_5
+          table: webform_submission_field_create_booking_end_date
+          field: webform_submission_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: webform_submission_date_filter
+          operator: '<='
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+          group: 1
+          exposed: true
+          expose:
+            operator_id: webform_submission_value_5_op
+            label: 'End Date'
+            description: ''
+            use_operator: false
+            operator: webform_submission_value_5_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: webform_submission_value_5
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              content_editor: '0'
+              administrator: '0'
+              admin_team: '0'
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         webform_id:
           id: webform_id
           table: webform_submission
