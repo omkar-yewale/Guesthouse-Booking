@@ -10,6 +10,9 @@
 .occupancy-red {
   background-color: red;
 }
+.occupancy-yellow {
+  background-color: #d8eb34;
+}
 
 /* CSS */
 .room-details-btn-wrapper {
@@ -57,4 +60,24 @@
 
 .contant_box_404 {
   margin-top: -50px;
+}
+
+/* Booking link from rooms availble. */
+
+.add-booking,
+.view-booking {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* Styling for the image */
+.add-booking img,
+.view-booking img {
+  width: 40px;
+  height: 40px;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }

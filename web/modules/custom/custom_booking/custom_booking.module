@@ -419,6 +419,31 @@ function custom_booking_preprocess_views_view(array &$variables) {
 }
 
 /**
+ * Implements TEMPLATE_preprocess_views_view_field().
+ */
+function custom_booking_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  if ($view->id() == 'room_availability' && $view->current_display == 'page_1') {
+    global $base_url;
+    $startDate = \Drupal::request()->query->get('start_date');
+    $endDate = \Drupal::request()->query->get('end_date');
+    if (empty($startDate)) {
+      $startDate = date('Y-m-d');
+    }
+    if (empty($endDate)) {
+      $endDate = date('Y-m-d');
+    }
+    foreach ($view->field as $fid => $field) {
+      if ($fid == 'nothing') {
+        // $val = strip_tags($view->field['available_rooms']->render($row)['#markup']);
+        $view->field['nothing']->options['alter']['text'] = '<a href="' . $base_url . '/form/create-booking?start_date=' . $startDate . '&end_date=' . $endDate . '&guesthouse={{ field_guesthouse_1 }}&assign_room={{ nid }}" class="add-booking disabled" target="_blank"><img src="' . $base_url . '/sites/default/files/images/add.png" alt="Add New Booking"></a>
+        <a href="' . $base_url . '/booking-history?start_date=' . $startDate . '&end_date=' . $endDate . '&guesthouse={{ field_guesthouse_1 }}&assign_room={{ nid }}" class="view-booking" target="_blank"><img src="' . $base_url . '/sites/default/files/images/search.png" alt="View Booking"></a>';
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function custom_booking_theme($existing, $type, $theme, $path) {

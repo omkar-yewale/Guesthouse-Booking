@@ -135,14 +135,20 @@ class AvailableRooms extends FieldPluginBase {
           else {
             $available = $capacity - count($bookedRoomNids);
             $output = $available > 0 ? $available . ' Bed' . ($available > 1 ? 's' : '') . ' available' : 'Fully Booked';
-            $class = $available > 0 ? 'occupancy-green' : 'occupancy-red';
+            $class = $available > 0 ? 'occupancy-yellow' : 'occupancy-red';
+            if ($capacity == $available) {
+              $class = 'occupancy-green';
+            }
           }
         }
       }
       else {
         $available = $capacity - count($bookedRoomNids);
         $output = $available > 0 ? $available . ' Bed' . ($available > 1 ? 's' : '') . ' available' : 'Fully Booked';
-        $class = $available > 0 ? 'occupancy-green' : 'occupancy-red';
+        $class = $available > 0 ? 'occupancy-yellow' : 'occupancy-red';
+        if ($capacity == $available) {
+          $class = 'occupancy-green';
+        }
       }
     }
     else {

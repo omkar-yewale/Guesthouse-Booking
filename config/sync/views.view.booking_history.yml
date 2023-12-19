@@ -1812,6 +1812,16 @@ display:
           hide_alter_empty: true
           destination: false
       filters:
+        webform_id:
+          id: webform_id
+          table: webform_submission
+          field: webform_id
+          entity_type: webform_submission
+          entity_field: webform_id
+          plugin_id: bundle
+          value:
+            create_booking: create_booking
+          group: 1
         webform_submission_value_4:
           id: webform_submission_value_4
           table: webform_submission_field_create_booking_start_date
@@ -1910,16 +1920,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        webform_id:
-          id: webform_id
-          table: webform_submission
-          field: webform_id
-          entity_type: webform_submission
-          entity_field: webform_id
-          plugin_id: bundle
-          value:
-            create_booking: create_booking
-          group: 1
         combine:
           id: combine
           table: views
@@ -1940,7 +1940,7 @@ display:
             operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: combine
+            identifier: search
             required: false
             remember: false
             multiple: false
@@ -2029,7 +2029,7 @@ display:
             operator: webform_submission_value_1_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: room
+            identifier: assign_room
             required: false
             remember: false
             multiple: false

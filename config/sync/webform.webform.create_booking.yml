@@ -117,9 +117,6 @@ elements: |-
         required:
           ':input[name="employee_status"]':
             value: new
-      '#wrapper_attributes':
-        class:
-          - field-display-none
     employee_email:
       '#type': email
       '#title': 'Employee email'
@@ -130,9 +127,6 @@ elements: |-
         required:
           ':input[name="employee_status"]':
             value: new
-      '#wrapper_attributes':
-        class:
-          - field-display-none
     is_chargeable:
       '#type': checkbox
       '#title': 'Is chargeable'
