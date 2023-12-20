@@ -500,7 +500,7 @@ display:
             administrator: administrator
             admin_team: admin_team
       cache:
-        type: tag
+        type: none
         options: {  }
       empty:
         area:
