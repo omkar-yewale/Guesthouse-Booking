@@ -2,14 +2,14 @@
 
 namespace Drupal\custom_booking\Services;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\webform\Entity\WebformSubmission;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Psr\Log\LoggerInterface;
-use Drupal\Core\Mail\MailManagerInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\webform\Entity\WebformSubmission;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,7 +52,7 @@ class CommonServices {
    */
   protected $messenger;
 
-   /**
+  /**
    * The system site configuration.
    *
    * @var \Drupal\Core\Config\ImmutableConfig
@@ -77,7 +77,6 @@ class CommonServices {
    * @var \Drupal\Core\Mail\MailManagerInterface
    */
   protected $mailManager;
-
 
   /**
    * Constructs a new CommonServices object.
@@ -133,10 +132,14 @@ class CommonServices {
   /**
    * Get webform submissions ids.
    */
-  public function getBookedNids($startDate, $endDate, $roomId, $guesthouse) {
+  public function getBookedNids($startDate, $endDate, $roomId = NULL, $guesthouse = NULL) {
     $query = \Drupal::service('webform_query');
-    $query->addCondition('guesthouse', $guesthouse);
-    $query->addCondition('assign_room', $roomId);
+    if (!empty($guesthouse) && $guesthouse != 'All') {
+      $query->addCondition('guesthouse', $guesthouse);
+    }
+    if (!empty($roomId)) {
+      $query->addCondition('assign_room', $roomId);
+    }
     $query->addCondition('start_date', $endDate, '<=');
     $query->addCondition('end_date', $startDate, '>=');
     $bookedRoomNids = $query->processQuery()->fetchCol();
