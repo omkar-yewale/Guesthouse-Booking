@@ -12,6 +12,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
@@ -93,7 +94,7 @@ function custom_booking_form_alter(&$form, &$form_state, $form_id) {
  * Implements hook_views_exposed_form_alter().
  */
 function custom_booking_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
-  if ($form["#id"] == 'views-exposed-form-room-availability-page-1') {
+  if ($form["#id"] == 'views-exposed-form-room-availability-page-1' || $form["#id"] == 'views-exposed-form-booking-history-booking-list') {
     // Added start and end date filter for room availablity page.
     $form['start_date'] = [
       '#type' => 'date',
@@ -106,6 +107,30 @@ function custom_booking_form_views_exposed_form_alter(&$form, &$form_state, $for
       '#title' => t('End Date'),
       '#default_value' => date("Y-m-d"),
     ];
+  }
+}
+
+/**
+ * View Query alter Hook for Intro Meeting filter .
+ */
+function custom_booking_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // All boking view on availblity popup alter.
+  if ($view->id() == 'booking_history' && $view->current_display == 'booking_list') {
+    // Get all param from url.
+    $startDate = \Drupal::request()->query->get('start_date');
+    $endDate = \Drupal::request()->query->get('end_date');
+    $guesthouse = \Drupal::request()->query->get('guesthouse');
+    $assignRoom = \Drupal::request()->query->get('assign_room');
+    if (!empty($startDate) && !empty($endDate)) {
+      $commonService = \Drupal::service('common_services');
+      // Get all booking ids.
+      $bookedRoomNids = $commonService->getBookedNids($startDate, $endDate, $assignRoom, $guesthouse);
+      // Show only those booking in selected start and end date periods.
+      if (empty($bookedRoomNids)) {
+        $bookedRoomNids = [0];
+      }
+      $query->addWhere('AND', 'webform_submission.sid', $bookedRoomNids, 'IN');
+    }
   }
 }
 
@@ -204,7 +229,7 @@ function custom_booking_webform_submission_presave(WebformSubmissionInterface $w
  */
 function custom_booking_webform_submission_insert(WebformSubmissionInterface $webform_submission) {
   // Call a function to create or update the corresponding node.
-  create_update_booking_node($webform_submission);
+  custom_booking_create_update_booking_node($webform_submission);
 }
 
 /**
@@ -212,7 +237,7 @@ function custom_booking_webform_submission_insert(WebformSubmissionInterface $we
  */
 function custom_booking_webform_submission_update(WebformSubmissionInterface $webform_submission) {
   // Call a function to create or update the corresponding node.
-  create_update_booking_node($webform_submission);
+  custom_booking_create_update_booking_node($webform_submission);
 }
 
 /**
@@ -220,19 +245,22 @@ function custom_booking_webform_submission_update(WebformSubmissionInterface $we
  */
 function custom_booking_webform_submission_delete(WebformSubmissionInterface $webform_submission) {
   // Call a function to delete the corresponding node.
-  delete_booking_node($webform_submission);
+  custom_booking_delete_booking_node($webform_submission);
 }
 
 /**
  * Create or update the corresponding Booking node.
  */
-function create_update_booking_node(WebformSubmissionInterface $webform_submission) {
+function custom_booking_create_update_booking_node(WebformSubmissionInterface $webform_submission) {
   // Extract data from the webform submission.
   $data = $webform_submission->getData();
   // Create all values array.
   $nodeValues = [
     'type' => 'booking_history',
-    'title' => t('Booking from: :start_date to :end_date', [':start_date' => $data['start_date'], ':end_date' => $data['end_date']]),
+    'title' => t('Booking from: :start_date to :end_date', [
+      ':start_date' => $data['start_date'],
+      ':end_date' => $data['end_date'],
+    ]),
     'field_submission_id' => $webform_submission->id(),
     'field_booking_start_date' => $data['start_date'],
     'field_booking_end_date' => $data['end_date'],
@@ -241,7 +269,7 @@ function create_update_booking_node(WebformSubmissionInterface $webform_submissi
     'field_room_type' => $data['room_occupancy'],
   ];
   // Check if a node already exists for this submission.
-  $existing_node = load_booking_node($webform_submission->id());
+  $existing_node = custom_booking_load_booking_node($webform_submission->id());
 
   if ($existing_node) {
     // Node exists, then update it.
@@ -261,12 +289,12 @@ function create_update_booking_node(WebformSubmissionInterface $webform_submissi
 /**
  * Delete the corresponding Booking node.
  */
-function delete_booking_node(WebformSubmissionInterface $webform_submission) {
+function custom_booking_delete_booking_node(WebformSubmissionInterface $webform_submission) {
   // Extract data from the webform submission.
   $submissionId = $webform_submission->id();
 
   // Load the Booking node based on webform submission ID.
-  $node = load_booking_node($submissionId);
+  $node = custom_booking_load_booking_node($submissionId);
 
   if ($node) {
     // Node exists, delete it.
@@ -277,7 +305,7 @@ function delete_booking_node(WebformSubmissionInterface $webform_submission) {
 /**
  * Load the Booking node based on webform submission ID.
  */
-function load_booking_node($submissionId) {
+function custom_booking_load_booking_node($submissionId) {
   $query = \Drupal::entityQuery('node')
     ->condition('type', 'booking_history')
     ->condition('field_submission_id', $submissionId)
@@ -422,6 +450,8 @@ function custom_booking_preprocess_views_view(array &$variables) {
  * Implements TEMPLATE_preprocess_views_view_field().
  */
 function custom_booking_preprocess_views_view_field(&$variables) {
+  // In rooms avaiblity page alter custom text
+  // and add dynamic add and view booking links.
   $view = $variables['view'];
   if ($view->id() == 'room_availability' && $view->current_display == 'page_1') {
     global $base_url;
@@ -435,9 +465,10 @@ function custom_booking_preprocess_views_view_field(&$variables) {
     }
     foreach ($view->field as $fid => $field) {
       if ($fid == 'nothing') {
-        // $val = strip_tags($view->field['available_rooms']->render($row)['#markup']);
-        $view->field['nothing']->options['alter']['text'] = '<a href="' . $base_url . '/form/create-booking?start_date=' . $startDate . '&end_date=' . $endDate . '&guesthouse={{ field_guesthouse_1 }}&assign_room={{ nid }}" class="add-booking disabled" target="_blank"><img src="' . $base_url . '/sites/default/files/images/add.png" alt="Add New Booking"></a>
-        <a href="' . $base_url . '/booking-history?start_date=' . $startDate . '&end_date=' . $endDate . '&guesthouse={{ field_guesthouse_1 }}&assign_room={{ nid }}" class="view-booking" target="_blank"><img src="' . $base_url . '/sites/default/files/images/search.png" alt="View Booking"></a>';
+        // $val = $view->field['available_rooms']->render($row)['#markup'];
+        $view->field['nothing']->options['alter']['text'] =
+        '<a href="' . $base_url . '/form/create-booking?start_date=' . $startDate . '&end_date=' . $endDate . '&guesthouse={{ field_guesthouse_1 }}&assign_room={{ nid }}" class="add-booking disabled" target="_blank"><img src="' . $base_url . '/sites/default/files/images/add.png" alt="Add New Booking"></a>
+        <a href="' . $base_url . '/bookings?start_date=' . $startDate . '&end_date=' . $endDate . '&guesthouse={{ field_guesthouse_1 }}&assign_room={{ nid }}" class="view-booking use-ajax" data-dialog-options="{&quot;width&quot;:800, &quot;title&quot;:&quot;Bookings&quot;}" data-dialog-type="modal"><img src="' . $base_url . '/sites/default/files/images/search.png" alt="View Booking"></a>';
       }
     }
   }

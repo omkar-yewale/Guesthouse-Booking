@@ -3,7 +3,6 @@
 namespace Drupal\custom_booking\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -35,7 +34,7 @@ class BookingPriceSettingsForm extends ConfigFormBase {
       '#type' => 'fieldset',
       '#title' => $this->t('Booking Cost'),
     ];
-  
+
     $form['booking_cost']['shared_room_cost'] = [
       '#type' => 'number',
       '#title' => $this->t('Shared Room Cost Per Day'),
@@ -44,7 +43,7 @@ class BookingPriceSettingsForm extends ConfigFormBase {
       '#min' => 100,
       '#max' => 1000,
     ];
-  
+
     $form['booking_cost']['single_room_cost'] = [
       '#type' => 'number',
       '#title' => $this->t('Single Room Cost Per Day'),
@@ -67,13 +66,6 @@ class BookingPriceSettingsForm extends ConfigFormBase {
       ->save();
 
     parent::submitForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return parent::create($container);
   }
 
 }
