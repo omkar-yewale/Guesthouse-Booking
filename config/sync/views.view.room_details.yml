@@ -9,14 +9,11 @@ dependencies:
     - field.storage.taxonomy_term.field_lat_and_long
     - node.type.rooms
     - taxonomy.vocabulary.guesthouse
-    - user.role.admin_team
-    - user.role.administrator
   module:
     - better_exposed_filters
     - node
     - simple_gmap
     - taxonomy
-    - user
 id: room_details
 label: 'Room Details'
 module: views
@@ -480,11 +477,8 @@ display:
                   collapsible: false
                   is_secondary: false
       access:
-        type: role
-        options:
-          role:
-            administrator: administrator
-            admin_team: admin_team
+        type: none
+        options: {  }
       cache:
         type: tag
         options: {  }
@@ -643,7 +637,6 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
-        - user.roles
       tags:
         - 'config:field.storage.node.field_guesthouse'
         - 'config:field.storage.node.field_room_capacity'
@@ -667,7 +660,6 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
-        - user.roles
       tags:
         - 'config:field.storage.node.field_guesthouse'
         - 'config:field.storage.node.field_room_capacity'
