@@ -294,6 +294,7 @@ access:
     roles:
       - administrator
       - admin_team
+      - user
     users: {  }
     permissions: {  }
   view_any:
@@ -324,18 +325,21 @@ access:
     roles:
       - administrator
       - admin_team
+      - user
     users: {  }
     permissions: {  }
   update_own:
     roles:
       - administrator
       - admin_team
+      - user
     users: {  }
     permissions: {  }
   delete_own:
     roles:
       - administrator
       - admin_team
+      - user
     users: {  }
     permissions: {  }
   administer:
